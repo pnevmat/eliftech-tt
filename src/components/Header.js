@@ -4,13 +4,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-export default function Header() {
-  const navButtons = ['Shop', 'Sopping Cart'];
+export default function Header({ setActiveMenuBtn }) {
+  const navButtons = ['Shop', 'Shopping Cart'];
   return (
     <AppBar position="relative">
       <NavMenu>
         {navButtons.map((button, i) => {
-          console.log(i);
           return (
             <NavButton
               sx={{
@@ -20,6 +19,7 @@ export default function Header() {
               variant="h6"
               color="inherit"
               noWrap
+              onClick={e => setActiveMenuBtn(e.target.textContent)}
             >
               {button}
             </NavButton>

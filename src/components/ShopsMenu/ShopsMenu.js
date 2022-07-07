@@ -4,10 +4,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import { mainListItems } from './shops';
+import Shops from './Shops';
 import { styled } from '@mui/material/styles';
 
-export default function ShopsMenu() {
+export default function ShopsMenu({ fastfoods, setChosenShop }) {
   return (
     <Drawer variant="permanent">
       <Toolbar
@@ -23,7 +23,9 @@ export default function ShopsMenu() {
         </Typography>
       </Toolbar>
       <Divider />
-      <List component="nav">{mainListItems}</List>
+      <List component="nav">
+        <Shops fastfoods={fastfoods} setChosenShop={setChosenShop} />
+      </List>
     </Drawer>
   );
 }
