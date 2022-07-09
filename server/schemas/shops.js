@@ -12,7 +12,7 @@ const shopSchema = new Schema(
   { versionKey: false, timestamps: true },
 );
 
-shopSchema.plugin(mongoosePaginate);
+// shopSchema.plugin(mongoosePaginate);
 
 const Shop = mongoose.model('shops', shopSchema);
 

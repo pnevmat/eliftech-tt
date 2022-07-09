@@ -42,7 +42,7 @@ router.post('/', async (req, res, next) => {
 
 router.delete('/:productId', async (req, res, next) => {
   try {
-    const productToDelete = await 'remove shop func';
+    const productToDelete = await removeProduct(req.params.contactId);
     if (productToDelete) {
       res.json({
         code: 200,

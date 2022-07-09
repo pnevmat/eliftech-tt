@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -16,34 +16,26 @@ export default function ProductCards({
   ordersInCart,
   setOrdersInCart,
 }) {
-  const [productCards, setProducttCards] = useState([]);
+  const [chosenProducts, setChosenProducts] = useState([]);
 
   useEffect(() => {
-    if (productCards.length === 0) {
-      let productsCards = [];
-      products.map(fastfood => {
-        productsCards = [...productsCards, ...fastfood.products];
-        return fastfood;
+    if (chosenShop) {
+      const filteredProducts = products.filter(product => {
+        return product.shop === chosenShop;
       });
-
-      setProducttCards(productsCards);
+      setChosenProducts(filteredProducts);
     }
 
-    if (chosenShop && productCards.length !== 0) {
-      const productsCards = products.find(
-        fastfood => fastfood.title === chosenShop,
-      );
-
-      setProducttCards(productsCards.products);
+    if (!chosenShop && products && chosenProducts.length === 0) {
+      setChosenProducts(products);
     }
-  }, [products, productCards.length, chosenShop]);
-
+  }, [chosenShop, products, chosenProducts.length]);
   return (
     <Container maxWidth="md" component="div">
       <Grid container spacing={5} alignItems="flex-end">
-        {productCards.map(product => (
+        {chosenProducts.map(product => (
           // Enterprise card is full width at sm breakpoint
-          <Grid item key={product.title} xs={12} sm={6} md={4} lg={6}>
+          <Grid item key={product._id} xs={12} sm={6} md={4} lg={6}>
             <Card>
               <CardContent>
                 <CardMedia component="img" image={product.img} alt="random" />

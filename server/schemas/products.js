@@ -24,7 +24,7 @@ const productSchema = new Schema(
   { versionKey: false, timestamps: true },
 );
 
-productSchema.plugin(mongoosePaginate);
+// productSchema.plugin(mongoosePaginate);
 
 const Product = mongoose.model('products', productSchema);
 

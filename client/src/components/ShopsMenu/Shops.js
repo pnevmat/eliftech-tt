@@ -13,11 +13,11 @@ export default function Shops({ fastfoods, setChosenShop }) {
     <>
       {fastfoods.map(fastfood => (
         <ListItemButton
-          key={fastfood}
+          key={fastfood._id}
           onClick={e => setChosenShop(e.target.textContent)}
         >
           <ListItemIcon>{/* <DashboardIcon /> */}</ListItemIcon>
-          <ListItemText primary={fastfood} />
+          <ListItemText primary={fastfood.title} />
         </ListItemButton>
       ))}
 

@@ -1,8 +1,8 @@
 const Product = require('../schemas/products');
 
 const listProducts = async () => {
-  const products = await Product.paginate();
-  return products.docs;
+  const products = await Product.find();
+  return products;
 };
 
 const removeProduct = async productId => {

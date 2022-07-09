@@ -1,8 +1,8 @@
 const Shop = require('../schemas/shops');
 
 const listShops = async () => {
-  const shops = await Shop.paginate();
-  return shops.docs;
+  const shops = await Shop.find();
+  return shops;
 };
 
 const removeShop = async shopId => {
