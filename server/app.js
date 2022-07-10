@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const shopsRouter = require('./routers/shopsRouter');
 const productsRouter = require('./routers/productsRouter');
+const usersRouter = require('./routers/usersRouter');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 app.use('/shops', shopsRouter);
 app.use('/products', productsRouter);
+app.use('/users', usersRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });

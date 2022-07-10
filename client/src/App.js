@@ -5,15 +5,14 @@ import Box from '@mui/material/Box';
 import Header from './components/Header';
 import ShopsMenu from './components/ShopsMenu/ShopsMenu';
 import ProductCards from './components/ProductCards';
-import CustomerData from './components/CustomerData';
-import OrderCards from './components/OrderCards';
+import ShoppingCart from './components/ShoppingCart/ShoppingCart';
 import Footer from './components/Footer/Footer';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import './App.css';
 
-function App() {
+export default function App() {
   const [fastfoods, setFastfoods] = useState([]);
   const [products, setProducts] = useState([]);
   const [activeMenuBtn, setActiveMenuBtn] = useState('Shop');
@@ -75,8 +74,7 @@ function App() {
         </ShopContainer>
       ) : (
         <ShopContainer>
-          <CustomerData />
-          <OrderCards ordersInCart={ordersInCart} />
+          <ShoppingCart ordersInCart={ordersInCart} />
         </ShopContainer>
       )}
       <Footer />
@@ -88,7 +86,7 @@ const ShopContainer = styled(Box)({
   display: 'flex',
   alignItems: 'start',
   justifyContent: 'space-around',
+  maxHeight: '900px',
   marginTop: '64px',
+  backgroundColor: 'transparent',
 });
-
-export default App;

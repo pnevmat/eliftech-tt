@@ -31,7 +31,7 @@ export default function ProductCards({
     }
   }, [chosenShop, products, chosenProducts.length]);
   return (
-    <Container maxWidth="md" component="div">
+    <ProductCardsContainer maxWidth="lg" component="div">
       <Grid container spacing={5} alignItems="flex-end">
         {chosenProducts.map(product => (
           // Enterprise card is full width at sm breakpoint
@@ -68,9 +68,26 @@ export default function ProductCards({
           </Grid>
         ))}
       </Grid>
-    </Container>
+    </ProductCardsContainer>
   );
 }
+
+const ProductCardsContainer = styled(Container)({
+  maxHeight: '900px',
+  overflowY: 'scroll',
+  '&::-webkit-scrollbar': {
+    width: '15px',
+    color: '#000',
+  },
+  '&::-webkit-scrollbar-track': {
+    borderRadius: '10px',
+    backgroundColor: '#cbc3c3de',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    borderRadius: '10px',
+    backgroundColor: 'rgba(2,2,2,0.65)',
+  },
+});
 
 const CardAction = styled(CardActions)({
   justifyContent: 'flex-end',
