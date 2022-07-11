@@ -6,6 +6,9 @@ import Header from './components/Header';
 import ShopsMenu from './components/ShopsMenu/ShopsMenu';
 import ProductCards from './components/ProductCards';
 import ShoppingCart from './components/ShoppingCart/ShoppingCart';
+import CardActions from '@mui/material/CardActions';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import Footer from './components/Footer/Footer';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -17,33 +20,17 @@ export default function App() {
   const [products, setProducts] = useState([]);
   const [activeMenuBtn, setActiveMenuBtn] = useState('Shop');
   const [chosenShop, setChosenShop] = useState(null);
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+  });
+  console.log('User data: ', userData);
   const [ordersInCart, setOrdersInCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    // const fastfoodsData = [
-    //   {
-    //     title: 'Donalds',
-    //     products: [
-    //       {
-    //         img: 'https://source.unsplash.com/random',
-    //         title: 'Ham-Burger',
-    //         price: '10',
-    //       },
-    //       {
-    //         img: 'https://source.unsplash.com/random',
-    //         title: 'Cheese-burger',
-    //         subheader: 'Most popular',
-    //         price: '15',
-    //       },
-    //       {
-    //         img: 'https://source.unsplash.com/random',
-    //         title: 'Big-Mack',
-    //         price: '30',
-    //       },
-    //     ],
-    //   },
-    // ];
-
     const timoutId = setTimeout(() => {
       shopsQuery().then(({ data }) => {
         setFastfoods(data);
@@ -57,6 +44,54 @@ export default function App() {
     return () => clearTimeout(timoutId);
   }, []);
 
+  useEffect(() => {
+    let totalPrice = 0;
+    ordersInCart.map(order => {
+      totalPrice += order.price * order.quontity;
+      return order;
+    });
+
+    setTotalPrice(totalPrice);
+  }, [ordersInCart]);
+
+  const ordersFromShopHandler = orderedProduct => {
+    if (ordersInCart.length === 0) {
+      return setOrdersInCart([{ ...orderedProduct, quontity: 1 }]);
+    }
+
+    const foundOrder = ordersInCart.find(
+      order => order._id === orderedProduct._id,
+    );
+
+    if (foundOrder) {
+      const chageQuontity = ordersInCart.map(order =>
+        order._id === foundOrder._id
+          ? { ...order, quontity: order.quontity + 1 }
+          : order,
+      );
+
+      setOrdersInCart(chageQuontity);
+    } else {
+      setOrdersInCart([...ordersInCart, { ...orderedProduct, quontity: 1 }]);
+    }
+  };
+
+  const ordersQuontityChangeHandler = orderWithChangedQuontity => {
+    console.log('Order with changed quontity: ', orderWithChangedQuontity);
+    const changeQuontity = ordersInCart.map(order => {
+      return order._id === orderWithChangedQuontity._id
+        ? orderWithChangedQuontity
+        : order;
+    });
+
+    setOrdersInCart(changeQuontity);
+  };
+
+  const submitOrderHandler = () => {
+    const dataToSubmit = { ...userData, orders: ordersInCart };
+    console.log('Submit orders object: ', dataToSubmit);
+  };
+
   const theme = createTheme();
   return (
     <ThemeProvider theme={theme}>
@@ -69,13 +104,36 @@ export default function App() {
             chosenShop={chosenShop}
             products={products}
             ordersInCart={ordersInCart}
-            setOrdersInCart={setOrdersInCart}
+            setOrdersInCart={ordersFromShopHandler}
           />
         </ShopContainer>
       ) : (
-        <ShopContainer>
-          <ShoppingCart ordersInCart={ordersInCart} />
-        </ShopContainer>
+        <>
+          <ShopContainer>
+            <ShoppingCart
+              userData={userData}
+              setUserData={setUserData}
+              ordersInCart={ordersInCart}
+              setOrdersInCart={ordersQuontityChangeHandler}
+            />
+          </ShopContainer>
+          <CardAction>
+            <TotalPriceContainer>
+              <Typography
+                component="h2"
+                variant="h4"
+                color="text.secondary"
+              >{`Total price: $${totalPrice}`}</Typography>
+              <SubmitButton
+                variant="outlined"
+                align="center"
+                onClick={submitOrderHandler}
+              >
+                Submit
+              </SubmitButton>
+            </TotalPriceContainer>
+          </CardAction>
+        </>
       )}
       <Footer />
     </ThemeProvider>
@@ -89,4 +147,31 @@ const ShopContainer = styled(Box)({
   maxHeight: '900px',
   marginTop: '64px',
   backgroundColor: 'transparent',
+});
+
+const CardAction = styled(CardActions)({
+  justifyContent: 'flex-end',
+  paddingRight: '20px',
+  paddingBottom: '60px',
+  marginTop: '30px',
+});
+
+const TotalPriceContainer = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  maxWidth: '40vw',
+});
+
+const SubmitButton = styled(Button)({
+  width: '100%',
+  maxWidth: '300px',
+  maxHeight: '150px',
+  paddingTop: '15px',
+  paddingRight: '40px',
+  paddingBottom: '15px',
+  paddingLeft: '40px',
+  borderRadius: '15px',
+  fontSize: '20px',
 });

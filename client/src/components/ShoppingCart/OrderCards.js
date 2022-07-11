@@ -5,13 +5,11 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
-export default function OrderCards({ ordersInCart }) {
+export default function OrderCards({ ordersInCart, setOrdersInCart }) {
   // const tiers = [
   //   {
   //     title: 'Ham-Burger',
@@ -68,11 +66,16 @@ export default function OrderCards({ ordersInCart }) {
                     </Typography>
                   </ProductCardTextWrapper>
                   <CardQuontityInput
-                    id="contact phone number"
+                    id="ordered product quontyty"
                     // label="Contact phone number"
                     type="number"
-                    // value={this.state.contactPhoneNumber}
-                    // onChange={this.handleChange('contactPhoneNumber')}
+                    value={order.quontity}
+                    onChange={e =>
+                      setOrdersInCart({
+                        ...order,
+                        quontity: e.target.value,
+                      })
+                    }
                     // placeholder="Contact phone number"
                     margin="normal"
                   />
@@ -82,11 +85,6 @@ export default function OrderCards({ ordersInCart }) {
           </ProductCardContainer>
         ))}
       </ProductCardsContainer>
-      <CardAction>
-        <Button variant="contained" align="center">
-          Submit
-        </Button>
-      </CardAction>
     </Container>
   );
 }
@@ -158,8 +156,4 @@ const ProductCardTextWrapper = styled(Box)({
 
 const CardQuontityInput = styled(TextField)({
   margin: 0,
-});
-
-const CardAction = styled(CardActions)({
-  justifyContent: 'flex-end',
 });

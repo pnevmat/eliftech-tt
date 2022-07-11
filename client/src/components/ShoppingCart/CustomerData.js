@@ -6,26 +6,57 @@ import Typography from '@mui/material/Typography';
 import InputUnstyled from '@mui/base/InputUnstyled';
 import { styled } from '@mui/material/styles';
 
-export default function CustomerData() {
+export default function CustomerData({ userData, setUserData }) {
+  const valid = false;
   return (
     <CustomerDataWrapper>
       <Drawer variant="permanent">
         <InputList component="nav">
           <InputWrapper>
             <InputLabel>Name:</InputLabel>
-            <StyledInput />
+            <StyledInput
+              value={userData.name}
+              onChange={e => setUserData({ ...userData, name: e.target.value })}
+            />
+            {!valid && (
+              <ValidationMessage>Validation message</ValidationMessage>
+            )}
           </InputWrapper>
           <InputWrapper>
             <InputLabel>Email:</InputLabel>
-            <StyledInput />
+            <StyledInput
+              value={userData.email}
+              onChange={e =>
+                setUserData({ ...userData, email: e.target.value })
+              }
+            />
+            {!valid && (
+              <ValidationMessage>Validation message</ValidationMessage>
+            )}
           </InputWrapper>
           <InputWrapper>
             <InputLabel>Phone:</InputLabel>
-            <StyledInput />
+            <StyledInput
+              value={userData.phone}
+              onChange={e =>
+                setUserData({ ...userData, phone: e.target.value })
+              }
+            />
+            {!valid && (
+              <ValidationMessage>Validation message</ValidationMessage>
+            )}
           </InputWrapper>
           <InputWrapper>
             <InputLabel>Address:</InputLabel>
-            <StyledInput />
+            <StyledInput
+              value={userData.address}
+              onChange={e =>
+                setUserData({ ...userData, address: e.target.value })
+              }
+            />
+            {!valid && (
+              <ValidationMessage>Validation message</ValidationMessage>
+            )}
           </InputWrapper>
         </InputList>
       </Drawer>
@@ -120,3 +151,10 @@ const StyledInput = styled(InputUnstyled)(({ theme }) => ({
     }`,
   },
 }));
+
+const ValidationMessage = styled(Typography)({
+  paddingLeft: '10px',
+  fontSize: '14px',
+  fontWeight: 400,
+  color: 'red',
+});

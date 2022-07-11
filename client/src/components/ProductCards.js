@@ -59,7 +59,7 @@ export default function ProductCards({
                 <Button
                   variant="contained"
                   align="center"
-                  onClick={() => setOrdersInCart([...ordersInCart, product])}
+                  onClick={() => setOrdersInCart(product)}
                 >
                   Add to Cart
                 </Button>
