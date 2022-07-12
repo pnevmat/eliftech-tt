@@ -47,7 +47,10 @@ export default function App() {
   useEffect(() => {
     const timoutId = setTimeout(() => {
       shopsQuery().then(({ data }) => {
-        setFastfoods(data);
+        const shopsWithAnabledProp = data.map(shop => {
+          return { ...shop, disabled: false };
+        });
+        setFastfoods(shopsWithAnabledProp);
       });
 
       productsQuery().then(({ data }) => {
@@ -55,7 +58,9 @@ export default function App() {
       });
     }, 1500);
 
-    return () => clearTimeout(timoutId);
+    return () => {
+      clearTimeout(timoutId);
+    };
   }, []);
 
   useEffect(() => {
@@ -66,6 +71,16 @@ export default function App() {
     });
 
     setTotalPrice(totalPrice);
+
+    if (ordersInCart.length === 0 && localStorage.getItem('Products')) {
+      const orders = JSON.parse(localStorage.getItem('Products'));
+      setOrdersInCart(orders);
+    }
+
+    if (ordersInCart.length !== 0) {
+      const orders = JSON.stringify(ordersInCart);
+      localStorage.setItem('Products', orders);
+    }
   }, [ordersInCart]);
 
   const ordersFromShopHandler = orderedProduct => {
@@ -134,6 +149,14 @@ export default function App() {
       addressValidator(address).value &&
       orders.length !== 0
     ) {
+      localStorage.removeItem('Products');
+      setOrdersInCart([]);
+      setUserData({
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+      });
       usersQuery(dataToSubmit);
     } else {
       setValidName(nameValidator(name));
@@ -150,7 +173,11 @@ export default function App() {
       <Header setActiveMenuBtn={setActiveMenuBtn} />
       {activeMenuBtn === 'Shop' ? (
         <ShopContainer>
-          <ShopsMenu fastfoods={fastfoods} setChosenShop={setChosenShop} />
+          <ShopsMenu
+            fastfoods={fastfoods}
+            setFastfoods={setFastfoods}
+            setChosenShop={setChosenShop}
+          />
           <ProductCards
             chosenShop={chosenShop}
             products={products}

@@ -7,7 +7,7 @@ import List from '@mui/material/List';
 import Shops from './Shops';
 import { styled } from '@mui/material/styles';
 
-export default function ShopsMenu({ fastfoods, setChosenShop }) {
+export default function ShopsMenu({ fastfoods, setFastfoods, setChosenShop }) {
   return (
     <Drawer variant="permanent">
       <Toolbar
@@ -24,7 +24,11 @@ export default function ShopsMenu({ fastfoods, setChosenShop }) {
       </Toolbar>
       <Divider />
       <List component="nav">
-        <Shops fastfoods={fastfoods} setChosenShop={setChosenShop} />
+        <Shops
+          fastfoods={fastfoods}
+          setFastfoods={setFastfoods}
+          setChosenShop={setChosenShop}
+        />
       </List>
     </Drawer>
   );
