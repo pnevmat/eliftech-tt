@@ -33,7 +33,6 @@ export default function App() {
     phone: '',
     address: '',
   });
-  console.log('User data: ', userData);
   const [ordersInCart, setOrdersInCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -92,7 +91,6 @@ export default function App() {
   };
 
   const ordersQuontityChangeHandler = orderWithChangedQuontity => {
-    // console.log('Order with changed quontity: ', orderWithChangedQuontity);
     const changeQuontity = ordersInCart.map(order => {
       return order._id === orderWithChangedQuontity._id
         ? orderWithChangedQuontity

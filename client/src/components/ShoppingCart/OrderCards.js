@@ -16,24 +16,6 @@ export default function OrderCards({
   setOrdersInCart,
   deleteOrder,
 }) {
-  // const tiers = [
-  //   {
-  //     title: 'Ham-Burger',
-  //     price: '10',
-  //     buttonVariant: 'outlined',
-  //   },
-  //   {
-  //     title: 'Cheese-burger',
-  //     subheader: 'Most popular',
-  //     price: '15',
-  //     buttonVariant: 'contained',
-  //   },
-  //   {
-  //     title: 'Big-Mack',
-  //     price: '30',
-  //     buttonVariant: 'outlined',
-  //   },
-  // ];
   return (
     <Container maxWidth="lg" component="div">
       <ProductCardsContainer container spacing={5} alignItems="center">
@@ -79,7 +61,6 @@ export default function OrderCards({
                   </ProductCardTextWrapper>
                   <CardQuontityInput
                     id="ordered product quontyty"
-                    // label="Contact phone number"
                     type="number"
                     value={order.quontity}
                     onChange={e =>
@@ -88,7 +69,6 @@ export default function OrderCards({
                         quontity: e.target.value,
                       })
                     }
-                    // placeholder="Contact phone number"
                     margin="normal"
                   />
                 </ProductCardTextContainer>

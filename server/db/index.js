@@ -2,15 +2,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const uriDb = process.env.URI_DB;
 
-const db = new mongoose.connect(
-  uriDb,
-  // 	{
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  //   useCreateIndex: true,
-  //   useFindAndModify: false,
-  // }
-);
+const db = new mongoose.connect(uriDb);
 
 mongoose.connection.on('connected', err => {
   console.log('Mongoose connected');

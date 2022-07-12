@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
@@ -27,8 +26,6 @@ const userSchema = new Schema(
   },
   { versionKey: false, timestamps: true },
 );
-
-// shopSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model('users', userSchema);
 

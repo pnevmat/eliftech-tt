@@ -17,7 +17,6 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    // console.log('Request body: ', req.body);
     if (req.body.title) {
       const shop = await addShop(req.body);
       res.json({
@@ -39,7 +38,7 @@ router.post('/', async (req, res, next) => {
 
 router.delete('/:shopId', async (req, res, next) => {
   try {
-    const shopToDelete = await 'remove shop func';
+    const shopToDelete = await removeShop(req.params.shopId);
     if (shopToDelete) {
       res.json({
         code: 200,
