@@ -4,12 +4,18 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
-export default function OrderCards({ ordersInCart, setOrdersInCart }) {
+export default function OrderCards({
+  ordersInCart,
+  setOrdersInCart,
+  deleteOrder,
+}) {
   // const tiers = [
   //   {
   //     title: 'Ham-Burger',
@@ -43,6 +49,12 @@ export default function OrderCards({ ordersInCart, setOrdersInCart }) {
           >
             <ProductCard>
               <ProductCardContent>
+                <DeleteOrderButton
+                  aria-label="delete"
+                  onClick={() => deleteOrder(order)}
+                >
+                  <ClearIcon />
+                </DeleteOrderButton>
                 <ProductImage component="img" image={order.img} alt="random" />
                 <ProductCardTextContainer
                   sx={{
@@ -129,9 +141,22 @@ const ProductCard = styled(Card)({
 });
 
 const ProductCardContent = styled(CardContent)({
+  position: 'relative',
   display: 'flex',
   alignItems: 'flex-end',
   justifyContent: 'space-between',
+});
+
+const DeleteOrderButton = styled(IconButton)({
+  position: 'absolute',
+  top: 0,
+  left: '95%',
+  '& > svg': {
+    fill: '#000',
+  },
+  '& > svg:hover': {
+    fill: '#1976d2',
+  },
 });
 
 const ProductImage = styled(CardMedia)({

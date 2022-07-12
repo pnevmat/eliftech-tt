@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import shopsQuery from './api/shopsQuery';
 import productsQuery from './api/productsQuery';
+import usersQuery from './api/usersQuery';
 import Box from '@mui/material/Box';
 import Header from './components/Header';
 import ShopsMenu from './components/ShopsMenu/ShopsMenu';
@@ -11,6 +12,12 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Footer from './components/Footer/Footer';
 import CssBaseline from '@mui/material/CssBaseline';
+import {
+  nameValidator,
+  emailValidator,
+  phoneValidator,
+  addressValidator,
+} from './utils/validators';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import './App.css';
@@ -29,6 +36,14 @@ export default function App() {
   console.log('User data: ', userData);
   const [ordersInCart, setOrdersInCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const [validName, setValidName] = useState({ value: true, message: '' });
+  const [validEmail, setValidEmail] = useState({ value: true, message: '' });
+  const [validPhone, setValidPhone] = useState({ value: true, message: '' });
+  const [validAddress, setValidAddress] = useState({
+    value: true,
+    message: '',
+  });
 
   useEffect(() => {
     const timoutId = setTimeout(() => {
@@ -77,7 +92,7 @@ export default function App() {
   };
 
   const ordersQuontityChangeHandler = orderWithChangedQuontity => {
-    console.log('Order with changed quontity: ', orderWithChangedQuontity);
+    // console.log('Order with changed quontity: ', orderWithChangedQuontity);
     const changeQuontity = ordersInCart.map(order => {
       return order._id === orderWithChangedQuontity._id
         ? orderWithChangedQuontity
@@ -87,9 +102,47 @@ export default function App() {
     setOrdersInCart(changeQuontity);
   };
 
+  const deleteOrderHandler = product => {
+    const filteredOrders = ordersInCart.filter(
+      order => order._id !== product._id,
+    );
+
+    setOrdersInCart(filteredOrders);
+  };
+
+  const customerInputsChangeHandler = (text, identifier) => {
+    if (identifier === 'name') {
+      setUserData({ ...userData, name: text });
+      setValidName(nameValidator(text));
+    } else if (identifier === 'email') {
+      setUserData({ ...userData, email: text });
+      setValidEmail(emailValidator(text));
+    } else if (identifier === 'phone') {
+      setUserData({ ...userData, phone: text });
+      setValidPhone(phoneValidator(text));
+    } else if (identifier === 'address') {
+      setUserData({ ...userData, address: text });
+      setValidAddress(addressValidator(text));
+    }
+  };
+
   const submitOrderHandler = () => {
     const dataToSubmit = { ...userData, orders: ordersInCart };
-    console.log('Submit orders object: ', dataToSubmit);
+    const { name, email, phone, address, orders } = dataToSubmit;
+    if (
+      nameValidator(name).value &&
+      emailValidator(email).value &&
+      phoneValidator(phone).value &&
+      addressValidator(address).value &&
+      orders.length !== 0
+    ) {
+      usersQuery(dataToSubmit);
+    } else {
+      setValidName(nameValidator(name));
+      setValidEmail(emailValidator(email));
+      setValidPhone(phoneValidator(phone));
+      setValidAddress(addressValidator(address));
+    }
   };
 
   const theme = createTheme();
@@ -112,9 +165,14 @@ export default function App() {
           <ShopContainer>
             <ShoppingCart
               userData={userData}
-              setUserData={setUserData}
+              setUserData={customerInputsChangeHandler}
               ordersInCart={ordersInCart}
               setOrdersInCart={ordersQuontityChangeHandler}
+              validName={validName}
+              validEmail={validEmail}
+              validPhone={validPhone}
+              validAddress={validAddress}
+              deleteOrder={deleteOrderHandler}
             />
           </ShopContainer>
           <CardAction>

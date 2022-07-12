@@ -6,8 +6,14 @@ import Typography from '@mui/material/Typography';
 import InputUnstyled from '@mui/base/InputUnstyled';
 import { styled } from '@mui/material/styles';
 
-export default function CustomerData({ userData, setUserData }) {
-  const valid = false;
+export default function CustomerData({
+  userData,
+  setUserData,
+  validName,
+  validEmail,
+  validPhone,
+  validAddress,
+}) {
   return (
     <CustomerDataWrapper>
       <Drawer variant="permanent">
@@ -16,46 +22,44 @@ export default function CustomerData({ userData, setUserData }) {
             <InputLabel>Name:</InputLabel>
             <StyledInput
               value={userData.name}
-              onChange={e => setUserData({ ...userData, name: e.target.value })}
+              onChange={e => setUserData(e.target.value, 'name')}
+              onBlur={e => setUserData(e.target.value, 'name')}
             />
-            {!valid && (
-              <ValidationMessage>Validation message</ValidationMessage>
+            {!validName.value && (
+              <ValidationMessage>{validName.message}</ValidationMessage>
             )}
           </InputWrapper>
           <InputWrapper>
             <InputLabel>Email:</InputLabel>
             <StyledInput
               value={userData.email}
-              onChange={e =>
-                setUserData({ ...userData, email: e.target.value })
-              }
+              onChange={e => setUserData(e.target.value, 'email')}
+              onBlur={e => setUserData(e.target.value, 'email')}
             />
-            {!valid && (
-              <ValidationMessage>Validation message</ValidationMessage>
+            {!validEmail.value && (
+              <ValidationMessage>{validEmail.message}</ValidationMessage>
             )}
           </InputWrapper>
           <InputWrapper>
             <InputLabel>Phone:</InputLabel>
             <StyledInput
               value={userData.phone}
-              onChange={e =>
-                setUserData({ ...userData, phone: e.target.value })
-              }
+              onChange={e => setUserData(e.target.value, 'phone')}
+              onBlur={e => setUserData(e.target.value, 'phone')}
             />
-            {!valid && (
-              <ValidationMessage>Validation message</ValidationMessage>
+            {!validPhone.value && (
+              <ValidationMessage>{validPhone.message}</ValidationMessage>
             )}
           </InputWrapper>
           <InputWrapper>
             <InputLabel>Address:</InputLabel>
             <StyledInput
               value={userData.address}
-              onChange={e =>
-                setUserData({ ...userData, address: e.target.value })
-              }
+              onChange={e => setUserData(e.target.value, 'address')}
+              onBlur={e => setUserData(e.target.value, 'address')}
             />
-            {!valid && (
-              <ValidationMessage>Validation message</ValidationMessage>
+            {!validAddress.value && (
+              <ValidationMessage>{validAddress.message}</ValidationMessage>
             )}
           </InputWrapper>
         </InputList>
