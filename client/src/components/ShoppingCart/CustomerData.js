@@ -2,6 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
+// import { Wrapper, Status } from '@googlemaps/react-wrapper';
 import Typography from '@mui/material/Typography';
 import InputUnstyled from '@mui/base/InputUnstyled';
 import { styled } from '@mui/material/styles';
@@ -18,6 +19,23 @@ export default function CustomerData({
     <CustomerDataWrapper>
       <Drawer variant="permanent">
         <InputList component="nav">
+          {/* <Box> */}
+          {/* render={render} */}
+          {/* <Wrapper apiKey={'YOUR_API_KEY'}> */}
+          {/* <YourComponent /> */}
+          {/* </Wrapper> */}
+          {/* </Box> */}
+          <InputWrapper>
+            <InputLabel>Address:</InputLabel>
+            <StyledInput
+              value={userData.address}
+              onChange={e => setUserData(e.target.value, 'address')}
+              onBlur={e => setUserData(e.target.value, 'address')}
+            />
+            {!validAddress.value && (
+              <ValidationMessage>{validAddress.message}</ValidationMessage>
+            )}
+          </InputWrapper>
           <InputWrapper>
             <InputLabel>Name:</InputLabel>
             <StyledInput
@@ -49,17 +67,6 @@ export default function CustomerData({
             />
             {!validPhone.value && (
               <ValidationMessage>{validPhone.message}</ValidationMessage>
-            )}
-          </InputWrapper>
-          <InputWrapper>
-            <InputLabel>Address:</InputLabel>
-            <StyledInput
-              value={userData.address}
-              onChange={e => setUserData(e.target.value, 'address')}
-              onBlur={e => setUserData(e.target.value, 'address')}
-            />
-            {!validAddress.value && (
-              <ValidationMessage>{validAddress.message}</ValidationMessage>
             )}
           </InputWrapper>
         </InputList>
