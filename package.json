@@ -2,6 +2,7 @@
   "name": "eliftech-tt",
   "version": "0.1.0",
   "private": true,
+	"homepage": "https://pnevmat.github.io/eliftech-tt-front",
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
