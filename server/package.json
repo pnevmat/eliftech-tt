@@ -8,6 +8,18 @@
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js"
   },
+	"repository": {
+    "type": "git",
+    "url": "git+https://github.com/pnevmat/eliftech-tt.git"
+  },
+  "author": "Vadim Kravchenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pnevmat/eliftech-tt/issues"
+  },
+	"homepage": "https://github.com/pnevmat/eliftech-tt#readme",
+  "main": "app.js",
+	"keywords": [],
   "dependencies": {
     "cloudinary": "^1.30.0",
     "cors": "^2.8.5",

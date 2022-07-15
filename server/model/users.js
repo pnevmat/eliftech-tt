@@ -18,6 +18,23 @@ const removeUser = async shopId => {
 
 const addUser = async body => {
   try {
+    const [user] = await User.find({ name: body.name, phone: body.phone });
+    if (user.length !== 0) {
+      const updatedUser = {
+        name: body.name,
+        email: body.email,
+        phone: body.phone,
+        address: body.address,
+        orders: [...user.orders, ...body.orders],
+      };
+
+      const response = await User.findByIdAndUpdate(
+        { _id: user._id },
+        updatedUser,
+      );
+      return response;
+    }
+
     const response = await User.create({ ...body });
     return response;
   } catch {
