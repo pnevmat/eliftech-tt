@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-// import { Wrapper, Status } from '@googlemaps/react-wrapper';
+import GoogleMap from './GoogleMap';
+import { Wrapper, Status } from '@googlemaps/react-wrapper';
+// import GoogleMapReact from 'google-map-react';
 import Typography from '@mui/material/Typography';
 import InputUnstyled from '@mui/base/InputUnstyled';
 import { styled } from '@mui/material/styles';
@@ -15,16 +17,34 @@ export default function CustomerData({
   validPhone,
   validAddress,
 }) {
+  const [data, setData] = useState([]);
+  const shopAddress = [50.427565233131844, 30.539179858883248];
+  // const mapSettings = { zoom: 10, center: google.maps.LatLngLiteral };
+  const heatmapData = {
+    positions: data,
+    options: {
+      radius: 20,
+      opacity: 1,
+    },
+  };
+  const [zoom, setZoom] = useState(11); // initial zoom
+  const [center, setCenter] = useState({
+    lat: 59.724465,
+    lng: 30.080121,
+  });
+
+  const addPositionsHandler = () => {};
   return (
     <CustomerDataWrapper>
       <Drawer variant="permanent">
-        <InputList component="nav">
-          {/* <Box> */}
-          {/* render={render} */}
-          {/* <Wrapper apiKey={'YOUR_API_KEY'}> */}
-          {/* <YourComponent /> */}
-          {/* </Wrapper> */}
-          {/* </Box> */}
+        <InputList component="nav" id="nav">
+          <Wrapper
+            apiKey={'AIzaSyBbEDMMXs5fXz6sqiyHyIKO7SqDszGXNto'}
+            defaultZoom={zoom}
+            defaultCenter={center}
+          >
+            <GoogleMap zoom={zoom} center={center} />
+          </Wrapper>
           <InputWrapper>
             <InputLabel>Address:</InputLabel>
             <StyledInput
