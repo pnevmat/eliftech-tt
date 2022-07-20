@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
-export default function Marker({ options, position }) {
-  console.log('Options of Marker: ', options);
+export default function Marker({ position, styleProps, clickCordinates }) {
+  // console.log('Options of Marker: ', options);
   console.log('Position in Marker: ', position);
+  console.log('Style props: ', styleProps);
   const [marker, setMarker] = React.useState();
+  const [coordinatesNormalized, setCoordinatesNormalized] = useState(null);
 
   useEffect(() => {
     if (!marker) {
@@ -20,21 +22,33 @@ export default function Marker({ options, position }) {
     };
   }, [marker]);
 
-  useEffect(() => {
-    if (marker && options) {
-      marker.setOptions(options);
-    }
-  }, [marker, options]);
+  // useEffect(() => {
+  //   if (marker && options) {
+  //     marker.setOptions(options);
+  //   }
+  // }, [marker, options]);
 
-  return <MarkerBox>Marker</MarkerBox>;
+  useEffect(() => {
+    if (clickCordinates) {
+      const clickCordinatesNormalize = {
+        x: clickCordinates.x - 43,
+        y: clickCordinates.y - 166,
+      };
+      setCoordinatesNormalized(clickCordinatesNormalize);
+    }
+  }, [clickCordinates]);
+
+  return (
+    <MarkerBox coordinatesNormalized={coordinatesNormalized}>Marker</MarkerBox>
+  );
 }
 
-const MarkerBox = styled(Box)({
+const MarkerBox = styled(Box)(({ coordinatesNormalized }) => ({
   position: 'absolute',
   width: 40,
   height: 40,
-  left: '430px',
-  top: '90px',
+  left: coordinatesNormalized?.x ? `${coordinatesNormalized.x}px` : '430px',
+  top: coordinatesNormalized?.y ? `${coordinatesNormalized.y}px` : '90px',
 
   border: '5px solid #f44336',
   borderRadius: 40,
@@ -44,4 +58,4 @@ const MarkerBox = styled(Box)({
   fontSize: 16,
   fontWeight: 'bold',
   padding: 4,
-});
+}));

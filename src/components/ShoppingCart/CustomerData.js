@@ -39,9 +39,15 @@ export default function CustomerData({
   // lng: 30.54006377370059,
   const [clicks, setClicks] = useState([]);
   console.log('Clicks: ', clicks);
+  const [clickCordinates, setClickCordinates] = useState([]);
+  console.log('Click coordinates: ', clickCordinates);
   const mapClickHandler = e => {
+    console.log('Event in map click handler: ', e);
     const coordinates = e.latLng;
     console.log('Coordinates clicked: ', coordinates);
+
+    const domEventCordinates = { x: e.domEvent.x, y: e.domEvent.y };
+    console.log('Dom event cordinates: ', domEventCordinates);
 
     const latLngValues = { lat: e.latLng.lat(), lng: e.latLng.lng() };
     console.log('Lat and Lng values from functions: ', latLngValues);
@@ -53,12 +59,16 @@ export default function CustomerData({
     console.log('Current zoom: ', currentZoom);
 
     const normalCoords = coords.llToPX(
-      [latAndLng.vb.lo, latAndLng.Ra.hi],
+      [latLngValues.lat, latLngValues.lng],
       currentZoom,
     );
     console.log('Coordinates to path to marker position: ', normalCoords);
     // getBounds();
-    setClicks([...clicks, coordinates]);
+    setClickCordinates([...clickCordinates, domEventCordinates]);
+    setClicks([
+      ...clicks,
+      { position: latLngValues, stylePosition: normalCoords },
+    ]);
   };
 
   return (
@@ -79,7 +89,12 @@ export default function CustomerData({
             >
               <Marker key={'i'} position={center} />
               {clicks.map((position, i) => (
-                <Marker key={i} position={position} />
+                <Marker
+                  key={i}
+                  position={position.position}
+                  styleProps={position.stylePosition}
+                  clickCordinates={clickCordinates[i]}
+                />
               ))}
             </GoogleMap>
           </Wrapper>
