@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import GoogleMap from './GoogleMap';
+import GoogleMap from './GoogleMap/GoogleMap';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
-// import GoogleMapReact from 'google-map-react';
+import Marker from './GoogleMap/Marker';
+import coords from 'google-maps-coords';
 import Typography from '@mui/material/Typography';
 import InputUnstyled from '@mui/base/InputUnstyled';
 import { styled } from '@mui/material/styles';
@@ -18,6 +19,8 @@ export default function CustomerData({
   validAddress,
 }) {
   const [data, setData] = useState([]);
+  const [map, setMap] = useState(null);
+  console.log('Map in googleMap component: ', map);
   const shopAddress = [50.427565233131844, 30.539179858883248];
   // const mapSettings = { zoom: 10, center: google.maps.LatLngLiteral };
   const heatmapData = {
@@ -27,13 +30,37 @@ export default function CustomerData({
       opacity: 1,
     },
   };
-  const [zoom, setZoom] = useState(11); // initial zoom
+  const [zoom, setZoom] = useState(18); // initial zoom
   const [center, setCenter] = useState({
-    lat: 59.724465,
-    lng: 30.080121,
+    lat: 50.42726007633734,
+    lng: 30.53808888888888,
   });
+  // lat: 50.42656007633734,
+  // lng: 30.54006377370059,
+  const [clicks, setClicks] = useState([]);
+  console.log('Clicks: ', clicks);
+  const mapClickHandler = e => {
+    const coordinates = e.latLng;
+    console.log('Coordinates clicked: ', coordinates);
 
-  const addPositionsHandler = () => {};
+    const latLngValues = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+    console.log('Lat and Lng values from functions: ', latLngValues);
+
+    const latAndLng = map.getBounds();
+    console.log('Pixel Lat and lng from event: ', latAndLng);
+
+    const currentZoom = map.zoom;
+    console.log('Current zoom: ', currentZoom);
+
+    const normalCoords = coords.llToPX(
+      [latAndLng.vb.lo, latAndLng.Ra.hi],
+      currentZoom,
+    );
+    console.log('Coordinates to path to marker position: ', normalCoords);
+    // getBounds();
+    setClicks([...clicks, coordinates]);
+  };
+
   return (
     <CustomerDataWrapper>
       <Drawer variant="permanent">
@@ -43,7 +70,18 @@ export default function CustomerData({
             defaultZoom={zoom}
             defaultCenter={center}
           >
-            <GoogleMap zoom={zoom} center={center} />
+            <GoogleMap
+              zoom={zoom}
+              center={center}
+              mapClickHandler={mapClickHandler}
+              map={map}
+              setMap={setMap}
+            >
+              <Marker key={'i'} position={center} />
+              {clicks.map((position, i) => (
+                <Marker key={i} position={position} />
+              ))}
+            </GoogleMap>
           </Wrapper>
           <InputWrapper>
             <InputLabel>Address:</InputLabel>

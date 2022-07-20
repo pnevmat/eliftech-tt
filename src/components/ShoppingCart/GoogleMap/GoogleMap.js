@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Wrapper, Status } from '@googlemaps/react-wrapper';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  Children,
+  isValidElement,
+  cloneElement,
+} from 'react';
 import { createCustomEqual } from 'fast-equals';
-import GoogleMapReact from 'google-map-react';
-import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
 // const defaultProps = {
@@ -35,17 +39,21 @@ import { styled } from '@mui/material/styles';
 //   return <Marker>{text}</Marker>;
 // };
 
-export default function GoogleMap({ zoom, center }) {
+export default function GoogleMap({
+  zoom,
+  center,
+  mapClickHandler,
+  map,
+  setMap,
+  children,
+}) {
   const ref = useRef(null);
-  const [map, setMap] = useState(null);
-  console.log('Map in googleMap component: ', map);
 
   useEffect(() => {
-    console.log('Ref in useEffect: ', ref);
     if (ref.current && !map) {
       setMap(new window.google.maps.Map(ref.current, {}));
     }
-  }, [ref, map]);
+  }, [ref, map, setMap]);
 
   const deepCompareEqualsForMaps = createCustomEqual(deepEqual => (a, b) => {
     if (
@@ -84,28 +92,37 @@ export default function GoogleMap({ zoom, center }) {
     }
   }, [map, zoom, center]);
 
-  const markerClickHandler = () => {};
-  return <Container ref={ref}></Container>;
+  useEffect(() => {
+    if (map) {
+      ['click', 'idle'].forEach(eventName =>
+        window.google.maps.event.clearListeners(map, eventName),
+      );
+
+      if (mapClickHandler) {
+        map.addListener('click', mapClickHandler);
+      }
+
+      // if (onIdle) {
+      //   map.addListener("idle", () => onIdle(map));
+      // }
+    }
+  }, [map, mapClickHandler]);
+
+  return (
+    <>
+      <Container ref={ref}></Container>
+      {Children.map(children, child => {
+        console.log('Child in ', child);
+        if (isValidElement(child)) {
+          // set the map prop on the child component
+          return cloneElement(child, { map });
+        }
+      })}
+    </>
+  );
 }
 
 const Container = styled('main')({
   width: '100%',
   height: '400px',
-});
-
-const Marker = styled('div')({
-  position: 'absolute',
-  width: 40,
-  height: 40,
-  left: '-40 / 2',
-  top: '-40 / 2',
-
-  border: '5px solid #f44336',
-  borderRadius: 40,
-  backgroundColor: 'white',
-  textAlign: 'center',
-  color: '#3f51b5',
-  fontSize: 16,
-  fontWeight: 'bold',
-  padding: 4,
 });
